@@ -3,17 +3,15 @@ import { TransactionGateway } from '../../domain/transaction/gateway/transaction
 import { Usecase } from '../usecase';
 
 export type ListDetailsTransactionInputDto = {
-  userId: string;
+  id: string;
 };
 
 export type ListDetailsTransactionOutputDto = {
-  transactions: {
-    id: string;
-    senderUserId: string;
-    receiverUserId: string;
-    amount: string;
-    description: string;
-  }[];
+  id: string;
+  senderUserId: string;
+  receiverUserId: string;
+  amount: string;
+  description: string;
 };
 
 export class ListDetailsTransactionUsecase
@@ -29,9 +27,9 @@ export class ListDetailsTransactionUsecase
   }
 
   public async execute({
-    userId,
+    id,
   }: ListDetailsTransactionInputDto): Promise<ListDetailsTransactionOutputDto> {
-    const transactions = await this.transactionGateway.listDetails(userId);
+    const transactions = await this.transactionGateway.listDetails(id);
 
     const output = this.presentOutput(transactions);
 
@@ -39,18 +37,14 @@ export class ListDetailsTransactionUsecase
   }
 
   private presentOutput(
-    transactions: Transaction[],
+    transaction: Transaction,
   ): ListDetailsTransactionOutputDto {
     return {
-      transactions: transactions.map((t) => {
-        return {
-          id: t.id,
-          senderUserId: t.senderUserId,
-          receiverUserId: t.receiverUserId,
-          amount: t.amount,
-          description: t.description,
-        };
-      }),
+      id: transaction.id,
+      senderUserId: transaction.senderUserId,
+      receiverUserId: transaction.receiverUserId,
+      amount: transaction.amount,
+      description: transaction.description,
     };
   }
 }

@@ -21,20 +21,22 @@ export class TransactionRepositoryPrisma implements TransactionGateway {
     await this.prismaClient.transaction.create({ data });
   }
 
-  public async listDetails(id: string): Promise<Transaction[]> {
-    const transactions = await this.prismaClient.transaction.findMany({
+  public async listDetails(id: string): Promise<Transaction> {
+    const transaction = await this.prismaClient.transaction.findUnique({
       where: { id },
     });
 
-    return transactions.map((t: Transaction) =>
-      Transaction.with({
-        id: t.id,
-        senderUserId: t.senderUserId,
-        receiverUserId: t.receiverUserId,
-        amount: t.amount,
-        description: t.description,
-      }),
-    );
+    if (!transaction) {
+      throw new Error('Transaction not found');
+    }
+
+    return Transaction.with({
+      id: transaction.id,
+      senderUserId: transaction.senderUserId,
+      receiverUserId: transaction.receiverUserId,
+      amount: transaction.amount,
+      description: transaction.description,
+    });
   }
 
   public async listDetailsByUser(userId: string): Promise<Transaction[]> {
@@ -44,7 +46,7 @@ export class TransactionRepositoryPrisma implements TransactionGateway {
       },
     });
 
-    return transactions.map((t: Transaction) =>
+    return transactions.map((t) =>
       Transaction.with({
         id: t.id,
         senderUserId: t.senderUserId,

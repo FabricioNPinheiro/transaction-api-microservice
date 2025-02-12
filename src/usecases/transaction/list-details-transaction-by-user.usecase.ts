@@ -2,11 +2,11 @@ import { Transaction } from '../../domain/transaction/entity/transaction.entity'
 import { TransactionGateway } from '../../domain/transaction/gateway/transaction.gateway';
 import { Usecase } from '../usecase';
 
-export type ListDetailsTransactionInputDto = {
+export type ListDetailsTransactionByUserInputDto = {
   userId: string;
 };
 
-export type ListDetailsTransactionOutputDto = {
+export type ListDetailsTransactionByUserOutputDto = {
   transactions: {
     id: string;
     senderUserId: string;
@@ -17,21 +17,24 @@ export type ListDetailsTransactionOutputDto = {
   }[];
 };
 
-export class ListDetailsTransactionUsecase
+export class ListDetailsTransactionByUserUsecase
   implements
-    Usecase<ListDetailsTransactionInputDto, ListDetailsTransactionOutputDto>
+    Usecase<
+      ListDetailsTransactionByUserInputDto,
+      ListDetailsTransactionByUserOutputDto
+    >
 {
   private constructor(
     private readonly transactionGateway: TransactionGateway,
   ) {}
 
   public static create(transactionGateway: TransactionGateway) {
-    return new ListDetailsTransactionUsecase(transactionGateway);
+    return new ListDetailsTransactionByUserUsecase(transactionGateway);
   }
 
   public async execute({
     userId,
-  }: ListDetailsTransactionInputDto): Promise<ListDetailsTransactionOutputDto> {
+  }: ListDetailsTransactionByUserInputDto): Promise<ListDetailsTransactionByUserOutputDto> {
     const transactions =
       await this.transactionGateway.listDetailsByUser(userId);
 
@@ -43,7 +46,7 @@ export class ListDetailsTransactionUsecase
   private presentOutput(
     transactions: Transaction[],
     userId: string,
-  ): ListDetailsTransactionOutputDto {
+  ): ListDetailsTransactionByUserOutputDto {
     return {
       transactions: transactions.map((t) => {
         return {

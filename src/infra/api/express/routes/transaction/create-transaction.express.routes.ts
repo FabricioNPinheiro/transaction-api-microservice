@@ -18,7 +18,7 @@ export class CreateTransactionRoute implements Route {
 
   public static create(createTransactionService: CreateTransactionUsecase) {
     return new CreateTransactionRoute(
-      '/transactions',
+      '/transaction',
       HttpMethod.POST,
       createTransactionService,
     );

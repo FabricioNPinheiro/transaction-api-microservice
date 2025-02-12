@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import {
-  ListDetailsTransactionOutputDto,
-  ListDetailsTransactionUsecase,
-} from '../../../../../usecases/transaction/list-details-transaction.usecase';
+  ListDetailsTransactionByUserOutputDto,
+  ListDetailsTransactionByUserUsecase,
+} from '../../../../../usecases/transaction/list-details-transaction-by-user.usecase';
 import { HttpMethod, Route } from '../route';
 
 export type ListDetailsTransactionResponseDto = {
@@ -20,11 +20,11 @@ export class ListDetailsTransactionByUserRoute implements Route {
   private constructor(
     private readonly path: string,
     private readonly method: HttpMethod,
-    private readonly listDetailsTransactionService: ListDetailsTransactionUsecase,
+    private readonly listDetailsTransactionService: ListDetailsTransactionByUserUsecase,
   ) {}
 
   public static create(
-    listDetailsTransactionService: ListDetailsTransactionUsecase,
+    listDetailsTransactionService: ListDetailsTransactionByUserUsecase,
   ) {
     return new ListDetailsTransactionByUserRoute(
       '/transactions/user/:userId',
@@ -56,7 +56,7 @@ export class ListDetailsTransactionByUserRoute implements Route {
   }
 
   private present(
-    input: ListDetailsTransactionOutputDto,
+    input: ListDetailsTransactionByUserOutputDto,
     userId: string,
   ): ListDetailsTransactionResponseDto {
     const response: ListDetailsTransactionResponseDto = {

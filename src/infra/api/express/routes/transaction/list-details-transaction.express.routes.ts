@@ -6,13 +6,11 @@ import {
 import { HttpMethod, Route } from '../route';
 
 export type ListDetailsTransactionResponseDto = {
-  transactions: {
-    id: string;
-    senderUserId: string;
-    receiverUserId: string;
-    amount: string;
-    description: string;
-  }[];
+  id: string;
+  senderUserId: string;
+  receiverUserId: string;
+  amount: string;
+  description: string;
 };
 
 export class ListDetailsTransactionRoute implements Route {
@@ -36,7 +34,9 @@ export class ListDetailsTransactionRoute implements Route {
     return async (request: Request, response: Response) => {
       const { id } = request.params;
 
-      const output = await this.listDetailsTransactionService.execute({ id });
+      const output = await this.listDetailsTransactionService.execute({
+        id,
+      });
 
       const responseBody = this.present(output);
 
@@ -56,13 +56,11 @@ export class ListDetailsTransactionRoute implements Route {
     input: ListDetailsTransactionOutputDto,
   ): ListDetailsTransactionResponseDto {
     const response: ListDetailsTransactionResponseDto = {
-      transactions: input.transactions.map((transaction) => ({
-        id: transaction.id,
-        senderUserId: transaction.senderUserId,
-        receiverUserId: transaction.receiverUserId,
-        amount: transaction.amount,
-        description: transaction.description,
-      })),
+      id: input.id,
+      senderUserId: input.senderUserId,
+      receiverUserId: input.receiverUserId,
+      amount: input.amount,
+      description: input.description,
     };
 
     return response;
