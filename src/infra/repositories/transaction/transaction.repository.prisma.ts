@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Transaction } from '../../../domain/transaction/entity/transaction.entity';
 import { TransactionGateway } from '../../../domain/transaction/gateway/transaction.gateway';
+import { publishTransactionEvent } from '../../rabbitmq/rabbitmq-publisher';
 
 export class TransactionRepositoryPrisma implements TransactionGateway {
   private constructor(private readonly prismaClient: PrismaClient) {}
@@ -19,6 +20,8 @@ export class TransactionRepositoryPrisma implements TransactionGateway {
     };
 
     await this.prismaClient.transaction.create({ data });
+
+    await publishTransactionEvent(data);
   }
 
   public async listDetails(id: string): Promise<Transaction> {
