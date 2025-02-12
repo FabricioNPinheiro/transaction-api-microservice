@@ -2,7 +2,7 @@ export type TransactionProps = {
   id: string;
   senderUserId: string;
   receiverUserId: string;
-  amount: number;
+  amount: string;
   description: string;
 };
 
@@ -12,7 +12,7 @@ export class Transaction {
   public static create(
     senderUserId: string,
     receiverUserId: string,
-    amount: number,
+    amount: string,
     description: string,
   ) {
     return new Transaction({

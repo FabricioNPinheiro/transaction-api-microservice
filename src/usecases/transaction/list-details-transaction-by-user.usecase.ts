@@ -11,7 +11,7 @@ export type ListDetailsTransactionOutputDto = {
     id: string;
     senderUserId: string;
     receiverUserId: string;
-    amount: number;
+    amount: string;
     description: string;
     type: 'sent' | 'received';
   }[];

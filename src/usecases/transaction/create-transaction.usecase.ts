@@ -5,7 +5,7 @@ import { Usecase } from '../usecase';
 export type CreateTransactionInputDto = {
   senderUserId: string;
   receiverUserId: string;
-  amount: number;
+  amount: string;
   description: string;
 };
 
