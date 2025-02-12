@@ -3,7 +3,7 @@ import { TransactionGateway } from '../../domain/transaction/gateway/transaction
 import { Usecase } from '../usecase';
 
 export type ListDetailsTransactionInputDto = {
-  id: string;
+  userId: string;
 };
 
 export type ListDetailsTransactionOutputDto = {
@@ -29,9 +29,9 @@ export class ListDetailsTransactionUsecase
   }
 
   public async execute({
-    id,
+    userId,
   }: ListDetailsTransactionInputDto): Promise<ListDetailsTransactionOutputDto> {
-    const transactions = await this.transactionGateway.listDetails(id);
+    const transactions = await this.transactionGateway.listDetails(userId);
 
     const output = this.presentOutput(transactions);
 
