@@ -1,5 +1,6 @@
 import { Transaction } from '../../domain/transaction/entity/transaction.entity';
 import { TransactionGateway } from '../../domain/transaction/gateway/transaction.gateway';
+import { publishTransactionEvent } from '../../infra/rabbitmq/rabbitmq-publisher';
 import { Usecase } from '../usecase';
 
 export type CreateTransactionInputDto = {
@@ -40,6 +41,8 @@ export class CreateTransactionUsecase
     await this.transactionGateway.save(aTransaction);
 
     const output = this.presentOutput(aTransaction);
+
+    await publishTransactionEvent(aTransaction);
 
     return output;
   }
